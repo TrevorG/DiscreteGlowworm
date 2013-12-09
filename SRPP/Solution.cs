@@ -8,39 +8,42 @@ namespace SRPP
 {
     public class Solution
     {
-        private IList<int> ids;
+        private IList<City> ids;
 
-        public Solution(IList<int> list)
+        public double Evaluation { get; private set; }
+
+        public Solution(IList<City> list)
         {
             ids = list;
         }
 
-        public double Evaluate(State s)
+        public void Evaluate(City warehouse, int k)
         {
-            int k = 0;
+
+            int length = 0;
             var i = ids.GetEnumerator();
             double totalLength = 0;
-            City previousCity = s.Warehouse;
+            City previousCity = warehouse;
             City currentCity;
 
             while (i.MoveNext())
             {
-                currentCity = s.GetCity(i.Current);
+                currentCity = i.Current;
                 totalLength += previousCity.Distance(currentCity);
                 previousCity = currentCity;
-                ++k;
-                if (k == s.K)
+                ++length;
+                if (length == k)
                 {
-                    totalLength += previousCity.Distance(s.Warehouse);
-                    previousCity = s.Warehouse;
-                    k = 0;
+                    totalLength += previousCity.Distance(warehouse);
+                    previousCity = warehouse;
+                    length = 0;
                 }
             }
 
-            if (k != 0)
-                totalLength += previousCity.Distance(s.Warehouse);
+            if (length != 0)
+                totalLength += previousCity.Distance(warehouse);
 
-            return totalLength;
+            Evaluation = totalLength;
         }
     }
 }

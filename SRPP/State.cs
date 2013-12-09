@@ -8,21 +8,23 @@ namespace SRPP
 {
     public class State
     {
-        public int K { get; private set; } 
+        public int K { get; private set; }
 
-        private IList<City> cities;
+        public IList<City> Cities { get; private set; }
 
-        public City Warehouse { get { return cities[0]; } }
+        public City Warehouse { get; private set; }
 
         public State(int k, List<City> cities)
         {
             this.K = k;
-            this.cities = cities;
+            Cities = cities;
+            Warehouse = Cities[0];
+            Cities.RemoveAt(0);
         }
 
         public City GetCity(int id)
         {
-            return cities[id];
+            return Cities[id];
         }
 
         public override string ToString()
@@ -30,7 +32,7 @@ namespace SRPP
             StringBuilder sb = new StringBuilder();
             sb.AppendLine(K.ToString());
             sb.AppendLine("Warehouse: " + Warehouse.ToString());
-            foreach(City c in cities)
+            foreach(City c in Cities)
                 sb.AppendLine(c.ToString());
 
             return sb.ToString();

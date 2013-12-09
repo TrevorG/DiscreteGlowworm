@@ -8,26 +8,31 @@ namespace SRPP
 {
     public class Optimalization
     {
-        public Solution Run(int count, int max)
+        public Solution Run(int populationSize, int count, State s)
         {
             Solution best;
             Random random = new Random();
             IList<Solution> solutions;
 
-            solutions = Initialize(count, max, random);
+            solutions = Initialize(populationSize, s, random);
+
+            for (int i = 0; i < count; ++i)
+            {
+                
+            }
 
             return null; //hush, compiler
 
         }
 
-        public IList<Solution> Initialize(int count, int max, Random rnd)
+        private IList<Solution> Initialize(int count, State s, Random rnd)
         {
             IList<Solution> solutions = new List<Solution>();
-            IList<int> solution;
+            IList<City> solution;
 
             for (int i = 0; i < count; ++i)
             {
-                solution = Enumerable.Range(1, max).ToList();
+                solution = new List<City>(s.Cities);
                 Shuffle(solution, rnd);
                 solutions.Add(new Solution(solution));
             }
@@ -36,16 +41,24 @@ namespace SRPP
             return solutions;
         }
 
-        private void Shuffle(IList<int> list, Random rnd)
+        private void Shuffle(IList<City> list, Random rnd)
         {
             int n = list.Count;
             while (n > 1)
             {
                 --n;
                 int k = rnd.Next(n + 1);
-                int value = list[k];
+                City value = list[k];
                 list[k] = list[n];
                 list[n] = value;
+            }
+        }
+
+        private void Evaluate(IList<Solution> l, State state)
+        {
+            foreach(Solution s in l)
+            {
+                s.Evaluate(state.Warehouse, state.K);
             }
         }
     }
