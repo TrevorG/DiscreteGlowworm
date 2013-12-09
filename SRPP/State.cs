@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace SRPP
 {
-    class State
+    public class State
     {
         public int K { get; private set; } 
 
