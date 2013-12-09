@@ -45,10 +45,9 @@ namespace SRPP
 
             Evaluation = totalLength;
         }
-        public void MergeWithBest(Solution best)
+        public void MergeWithBest(Solution best,Random random)
         {
             Difference diff = new Difference(this, best);
-            Random random = new Random();
             int position = random.Next(diff.Distance);
             City newBest = best.Cities[position];
             //we do have new city, so there's need for correction
