@@ -10,6 +10,11 @@ namespace SRPP
     {
         private IList<int> ids;
 
+        public Solution(IList<int> list)
+        {
+            ids = list;
+        }
+
         public double Evaluate(State s)
         {
             int k = 0;
