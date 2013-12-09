@@ -9,6 +9,8 @@ namespace SRPP
     public class State
     {
         public int K { get; private set; }
+        public int Iterations { get; set; }
+        public int PopulationSize { get; set; }
 
         public IList<City> Cities { get; private set; }
 

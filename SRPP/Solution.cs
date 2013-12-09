@@ -52,18 +52,11 @@ namespace SRPP
             int position = random.Next(diff.Distance);
             City newBest = best.Cities[position];
             //we do have new city, so there's need for correction
-            if (Cities.Contains(newBest))
+            //find current instance
+            if(Cities[position] != newBest)
             {
-                //find current instance
-                if(Cities[position] != newBest)
-                {
-                    City curSelected = Cities[position];
-                    Cities[Cities.IndexOf(newBest)] = curSelected;
-                    Cities[position] = newBest;
-                }
-            }
-            else
-            {
+                City curSelected = Cities[position];
+                Cities[Cities.IndexOf(newBest)] = curSelected;
                 Cities[position] = newBest;
             }
         }
