@@ -56,6 +56,13 @@ namespace SRPP
                     }
 
                     State state = new State(k, readCities);
+                    //test
+                    Solution sol = new Solution(new List<City> { readCities[0], readCities[2], readCities[1], readCities[3] });
+                    Solution best = new Solution(new List<City> { readCities[0], readCities[1], readCities[2], readCities[3] });
+                    Console.WriteLine(sol);
+                    Console.WriteLine(best);
+                    sol.MergeWithBest(best);
+                    Console.WriteLine(sol);
                 }
             }
             catch (OptionException e)
