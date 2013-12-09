@@ -8,17 +8,25 @@ namespace SRPP
 {
     public class Optimalization
     {
-        public Solution Run(int populationSize, int count, State s)
+        public Solution Run(int populationSize, int iterations, State s)
         {
             Solution best;
             Random random = new Random();
             IList<Solution> solutions;
+            IList<Difference> differences = new List<Difference>(populationSize);
 
             solutions = Initialize(populationSize, s, random);
 
-            for (int i = 0; i < count; ++i)
+            for (int i = 0; i < iterations; ++i)
             {
-                
+                Evaluate(solutions, s);
+                solutions.OrderBy(e => e.Evaluation);
+                best = solutions.Last();
+
+                differences.Clear();
+                for (int j = 0; j < populationSize - 1; ++j)
+                    differences.Add(new Difference(solutions[i], best));
+
             }
 
             return null; //hush, compiler

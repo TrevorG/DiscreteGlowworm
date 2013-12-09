@@ -8,20 +8,20 @@ namespace SRPP
 {
     public class Solution
     {
-        private IList<City> ids;
+        public IList<City> Cities { get; private set; }
 
         public double Evaluation { get; private set; }
 
         public Solution(IList<City> list)
         {
-            ids = list;
+            Cities = list;
         }
 
         public void Evaluate(City warehouse, int k)
         {
 
             int length = 0;
-            var i = ids.GetEnumerator();
+            var i = Cities.GetEnumerator();
             double totalLength = 0;
             City previousCity = warehouse;
             City currentCity;
