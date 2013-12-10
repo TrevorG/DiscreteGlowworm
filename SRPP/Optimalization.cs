@@ -29,6 +29,8 @@ namespace SRPP
                 solutions = solutions.OrderByDescending(e => e.Evaluation).ToList();
                 best = solutions.Last();
 
+                LocalSearch(best, 5, s);
+
                 //differences.Clear();
                 for (int j = 0; j < s.PopulationSize - 1; ++j)
                     solutions[j].MergeWithBest(best, randomizer);
@@ -45,7 +47,9 @@ namespace SRPP
             IList<Solution> solutions = new List<Solution>();
             Solution solution;
 
-            for (int i = 0; i < s.PopulationSize; ++i)
+            solutions.Add(GenerateGreedySolution(s));
+
+            for (int i = 1; i < s.PopulationSize; ++i)
             {
                 solution = new Solution(new List<City>(s.Cities));
                 Shuffle(solution);
@@ -96,10 +100,49 @@ namespace SRPP
                 else
                 {
                     //worse permutation, we go back to previous one
-                    s.SwapCities(n, m);
-                    
+                    s.SwapCities(m, n);
+                    s.Evaluate(state.Warehouse, state.K);
                 }
             }
+        }
+
+        public Solution GenerateGreedySolution(State s)
+        {
+            IList<City> sourceCities = new List<City>(s.Cities);
+            IList<City> destinationList = new List<City>(s.Cities.Count);
+            City previousCity = s.Warehouse;
+            int k = 0;
+            double minDistance;
+            double currentDistance;
+            int selectedCity;
+
+            while(sourceCities.Count > 0)
+            {
+                ++k;
+                selectedCity = 0;
+                minDistance = sourceCities[0].Distance(previousCity);
+                for (int j = 1; j < sourceCities.Count; ++j)
+                {
+                    currentDistance = sourceCities[j].Distance(previousCity);
+                    if (currentDistance < minDistance)
+                    {
+                        minDistance = currentDistance;
+                        selectedCity = j;
+                    }
+                }
+                if (k == s.K)
+                {
+                    previousCity = s.Warehouse;
+                    k = 0;
+                }
+                else
+                    previousCity = sourceCities[selectedCity];
+
+                destinationList.Add(sourceCities[selectedCity]);
+                sourceCities.RemoveAt(selectedCity);
+            }
+
+            return new Solution(destinationList);
         }
     }
 }
