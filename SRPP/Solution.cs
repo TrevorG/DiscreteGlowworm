@@ -48,15 +48,20 @@ namespace SRPP
         public void MergeWithBest(Solution best,Random random)
         {
             Difference diff = new Difference(this, best);
-            int position = random.Next(diff.Distance);
-            City newBest = best.Cities[position];
-            //we do have new city, so there's need for correction
-            //find current instance
-            if(Cities[position] != newBest)
+            if (diff.Positions.Count != 0)
             {
-                City curSelected = Cities[position];
-                Cities[Cities.IndexOf(newBest)] = curSelected;
-                Cities[position] = newBest;
+
+                int position = random.Next(diff.Distance);
+                position = diff.Positions[position];
+                City newBest = best.Cities[position];
+                //we do have new city, so there's need for correction
+                //find current instance
+                if (Cities[position] != newBest)
+                {
+                    City curSelected = Cities[position];
+                    Cities[Cities.IndexOf(newBest)] = curSelected;
+                    Cities[position] = newBest;
+                }
             }
         }
         public override string ToString()
