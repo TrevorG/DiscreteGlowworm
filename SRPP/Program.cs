@@ -32,7 +32,7 @@ namespace SRPP
             List<String> extra = new List<string>();
             try
             {
-                extra = p.Parse(args);
+                extra = p.Parse(new string[]{"basic\\100_k=3"});
                 if (extra.Count() == 0)
                 {
                     Console.WriteLine("File not given!");
@@ -56,13 +56,32 @@ namespace SRPP
                     }
 
                     State state = new State(k, readCities);
+                    Optimalization o = new Optimalization();
+                    Solution sol = o.Run(1000, 1000, state);
+                    Console.WriteLine(sol.Evaluation);
+
+                    /*List<City> l1 = new List<City>();
+                    for (int i = 0; i < 11; ++i)
+                    {
+                        l1.Add(new City(10 * i, 10 * i));
+                    }
+
+                    Solution s1 = new Solution(new List<City>(l1));
+                    l1.Reverse();
+                    Solution s2 = new Solution(new List<City>(l1));
+                    //
+                    for (int i = 0; i < 10; ++i)
+                        s1.MergeWithBest(s2);
+
+                    Difference diff = new Difference(s1, s2);*/
+
                     //test
-                    Solution sol = new Solution(new List<City> { readCities[0], readCities[2], readCities[1], readCities[3] });
+                    /*Solution sol = new Solution(new List<City> { readCities[0], readCities[2], readCities[1], readCities[3] });
                     Solution best = new Solution(new List<City> { readCities[0], readCities[1], readCities[2], readCities[3] });
                     Console.WriteLine(sol);
                     Console.WriteLine(best);
                     sol.MergeWithBest(best);
-                    Console.WriteLine(sol);
+                    Console.WriteLine(sol);*/
                 }
             }
             catch (OptionException e)
