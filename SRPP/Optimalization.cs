@@ -8,14 +8,20 @@ namespace SRPP
 {
     public class Optimalization
     {
+
+        private Random randomizer;
+
+        public Optimalization(){
+            randomizer = new Random();
+        }
+
         public Solution Run(State s)
         {
             Solution best = null;
-            Random random = new Random();
             IList<Solution> solutions;
             //IList<Difference> differences = new List<Difference>(populationSize);
 
-            solutions = Initialize(s, random);
+            solutions = Initialize(s);
 
             for (int i = 0; i < s.Iterations; ++i)
             {
@@ -25,7 +31,7 @@ namespace SRPP
 
                 //differences.Clear();
                 for (int j = 0; j < s.PopulationSize - 1; ++j)
-                    solutions[j].MergeWithBest(best, random);
+                    solutions[j].MergeWithBest(best, randomizer);
 
 
             }
@@ -34,32 +40,30 @@ namespace SRPP
 
         }
 
-        private IList<Solution> Initialize(State s, Random rnd)
+        private IList<Solution> Initialize(State s)
         {
             IList<Solution> solutions = new List<Solution>();
-            IList<City> solution;
+            Solution solution;
 
             for (int i = 0; i < s.PopulationSize; ++i)
             {
-                solution = new List<City>(s.Cities);
-                Shuffle(solution, rnd);
-                solutions.Add(new Solution(solution));
+                solution = new Solution(new List<City>(s.Cities));
+                Shuffle(solution);
+                solutions.Add(solution);
             }
 
 
             return solutions;
         }
 
-        private void Shuffle(IList<City> list, Random rnd)
+        private void Shuffle(Solution s)
         {
-            int n = list.Count;
+            int n = s.Cities.Count;
             while (n > 1)
             {
                 --n;
-                int k = rnd.Next(n + 1);
-                City value = list[k];
-                list[k] = list[n];
-                list[n] = value;
+                int k = randomizer.Next(n + 1);
+                s.SwapCities(k, n);
             }
         }
 
@@ -67,7 +71,34 @@ namespace SRPP
         {
             foreach(Solution s in l)
             {
-                s.Evaluate(state.Warehouse, state.K);
+                //s.Evaluate(state.Warehouse, state.K);
+                LocalSearch(s, 5, state);
+            }
+        }
+
+        private void LocalSearch(Solution s, int trials, State state)
+        {
+            int m, n;
+            double baseEvaluation = s.Evaluate(state.Warehouse, state.K);
+
+            for (int i = 0; i < trials; ++i)
+            {
+                m = randomizer.Next(s.Cities.Count);
+                do{
+                    n = randomizer.Next(s.Cities.Count);
+                }while(m == n);
+                s.SwapCities(m, n);
+                if (s.Evaluate(state.Warehouse, state.K) < baseEvaluation)
+                {
+                    //better permutation
+                    baseEvaluation = s.Evaluation;
+                }
+                else
+                {
+                    //worse permutation, we go back to previous one
+                    s.SwapCities(n, m);
+                    
+                }
             }
         }
     }

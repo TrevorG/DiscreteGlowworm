@@ -17,7 +17,7 @@ namespace SRPP
             Cities = list;
         }
 
-        public void Evaluate(City warehouse, int k)
+        public double Evaluate(City warehouse, int k)
         {
 
             int length = 0;
@@ -44,6 +44,7 @@ namespace SRPP
                 totalLength += previousCity.Distance(warehouse);
 
             Evaluation = totalLength;
+            return totalLength;
         }
 
         public void MergeWithBest(Solution best,Random random)
@@ -60,6 +61,13 @@ namespace SRPP
                 Cities[Cities.IndexOf(newBest)] = curSelected;
                 Cities[position] = newBest;
             }
+        }
+
+        public void SwapCities(int m, int n)
+        {
+            City c = Cities[m];
+            Cities[m] = Cities[n];
+            Cities[n] = c;
         }
 
         public override string ToString()
