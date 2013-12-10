@@ -8,15 +8,16 @@ namespace SRPP
 {
     public class Optimalization
     {
-
+        private int LSTrials = 0;
         private Random randomizer;
 
         public Optimalization(){
             randomizer = new Random();
         }
 
-        public Solution Run(State s)
+        public Solution Run(State s, int LSTrials)
         {
+            this.LSTrials = LSTrials;
             Solution best = null;
             IList<Solution> solutions;
             //IList<Difference> differences = new List<Difference>(populationSize);
@@ -72,7 +73,7 @@ namespace SRPP
             foreach(Solution s in l)
             {
                 //s.Evaluate(state.Warehouse, state.K);
-                LocalSearch(s, 5, state);
+                LocalSearch(s, LSTrials, state);
             }
         }
 
