@@ -19,6 +19,7 @@ namespace SRPP
             double sParam = 1.0;
             int popParam = 100;
             int iterParam = 300;
+            int lsParam = 5;
             String fileName = null;
             var p = new OptionSet() {
             { "g|gamma=", 
@@ -34,6 +35,8 @@ namespace SRPP
               v => {popParam = int.Parse(v,CultureInfo.InvariantCulture);} },
             { "i|iterations=", "iterations number",
               v => {iterParam = int.Parse(v,CultureInfo.InvariantCulture);} },
+            { "ls|localsearch=", "number of trials in local search",
+              v => {lsParam = int.Parse(v,CultureInfo.InvariantCulture);} },
             };
             List<String> extra = new List<string>();
             try
@@ -67,7 +70,7 @@ namespace SRPP
                     state.Iterations = iterParam;   
                     state.PopulationSize = popParam;
                     Optimalization o = new Optimalization();
-                    Solution sol = o.Run(state);
+                    Solution sol = o.Run(state,lsParam);
                     Console.WriteLine(sol.Evaluation);
 
                     /*List<City> l1 = new List<City>();
