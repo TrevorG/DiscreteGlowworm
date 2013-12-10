@@ -30,7 +30,7 @@ namespace SRPP
                 solutions = solutions.OrderByDescending(e => e.Evaluation).ToList();
                 best = solutions.Last();
 
-                LocalSearch(best, 5, s);
+                LocalSearch(best, s);
 
                 //differences.Clear();
                 for (int j = 0; j < s.PopulationSize - 1; ++j)
@@ -49,6 +49,7 @@ namespace SRPP
             Solution solution;
 
             solutions.Add(GenerateGreedySolution(s));
+            Console.WriteLine(solutions[0].Evaluate(s.Warehouse, s.K));
 
             for (int i = 1; i < s.PopulationSize; ++i)
             {
@@ -77,16 +78,16 @@ namespace SRPP
             foreach(Solution s in l)
             {
                 //s.Evaluate(state.Warehouse, state.K);
-                LocalSearch(s, LSTrials, state);
+                LocalSearch(s, state);
             }
         }
 
-        private void LocalSearch(Solution s, int trials, State state)
+        private void LocalSearch(Solution s, State state)
         {
             int m, n;
             double baseEvaluation = s.Evaluate(state.Warehouse, state.K);
 
-            for (int i = 0; i < trials; ++i)
+            for (int i = 0; i < LSTrials; ++i)
             {
                 m = randomizer.Next(s.Cities.Count);
                 do{
