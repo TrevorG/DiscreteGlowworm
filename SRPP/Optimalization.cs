@@ -8,24 +8,24 @@ namespace SRPP
 {
     public class Optimalization
     {
-        public Solution Run(int populationSize, int iterations, State s)
+        public Solution Run(State s)
         {
             Solution best = null;
             Random random = new Random();
             IList<Solution> solutions;
             //IList<Difference> differences = new List<Difference>(populationSize);
 
-            solutions = Initialize(populationSize, s, random);
+            solutions = Initialize(s, random);
 
-            for (int i = 0; i < iterations; ++i)
+            for (int i = 0; i < s.Iterations; ++i)
             {
                 Evaluate(solutions, s);
                 solutions = solutions.OrderByDescending(e => e.Evaluation).ToList();
                 best = solutions.Last();
 
                 //differences.Clear();
-                for (int j = 0; j < populationSize - 1; ++j)
-                    solutions[j].MergeWithBest(best);
+                for (int j = 0; j < s.PopulationSize - 1; ++j)
+                    solutions[j].MergeWithBest(best, random);
 
 
             }
@@ -34,12 +34,12 @@ namespace SRPP
 
         }
 
-        private IList<Solution> Initialize(int count, State s, Random rnd)
+        private IList<Solution> Initialize(State s, Random rnd)
         {
             IList<Solution> solutions = new List<Solution>();
             IList<City> solution;
 
-            for (int i = 0; i < count; ++i)
+            for (int i = 0; i < s.PopulationSize; ++i)
             {
                 solution = new List<City>(s.Cities);
                 Shuffle(solution, rnd);

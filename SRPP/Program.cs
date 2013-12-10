@@ -17,6 +17,8 @@ namespace SRPP
             double roParam = 0.0;
             double betaParam = 1.0;
             double sParam = 1.0;
+            int popParam = 100;
+            int iterParam = 300;
             String fileName = null;
             var p = new OptionSet() {
             { "g|gamma=", 
@@ -28,6 +30,10 @@ namespace SRPP
               v => {sParam = Double.Parse(v,CultureInfo.InvariantCulture);} },
             { "b|beta=", "beta parameter",
               v => {betaParam = Double.Parse(v,CultureInfo.InvariantCulture);} },
+            { "p|population=", "population size",
+              v => {popParam = int.Parse(v,CultureInfo.InvariantCulture);} },
+            { "i|iterations=", "iterations number",
+              v => {iterParam = int.Parse(v,CultureInfo.InvariantCulture);} },
             };
             List<String> extra = new List<string>();
             try
@@ -55,9 +61,13 @@ namespace SRPP
                         readCities.Add(new City(coords[0], coords[1]));
                     }
 
+                    Console.WriteLine("Running file: {0} iterations on {1} population",
+                                        iterParam,popParam);
                     State state = new State(k, readCities);
+                    state.Iterations = iterParam;   
+                    state.PopulationSize = popParam;
                     Optimalization o = new Optimalization();
-                    Solution sol = o.Run(1000, 1000, state);
+                    Solution sol = o.Run(state);
                     Console.WriteLine(sol.Evaluation);
 
                     /*List<City> l1 = new List<City>();
@@ -75,7 +85,6 @@ namespace SRPP
 
                     Difference diff = new Difference(s1, s2);*/
 
-                    //test
                     /*Solution sol = new Solution(new List<City> { readCities[0], readCities[2], readCities[1], readCities[3] });
                     Solution best = new Solution(new List<City> { readCities[0], readCities[1], readCities[2], readCities[3] });
                     Console.WriteLine(sol);

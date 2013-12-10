@@ -45,28 +45,23 @@ namespace SRPP
 
             Evaluation = totalLength;
         }
-        public void MergeWithBest(Solution best)
+
+        public void MergeWithBest(Solution best,Random random)
         {
             Difference diff = new Difference(this, best);
-            Random random = new Random();
-            int position = random.Next(diff.Distance);
-            City newBest = best.Cities[position];
-            //we do have new city, so there's need for correction
-            if (Cities.Contains(newBest))
+            if (diff.Distance != 0)
             {
+                int position = random.Next(diff.Distance);
+                position = diff.Positions[position];
+                City newBest = best.Cities[position];
+                //we do have new city, so there's need for correction
                 //find current instance
-                if(Cities[position] != newBest)
-                {
-                    City curSelected = Cities[position];
-                    Cities[Cities.IndexOf(newBest)] = curSelected;
-                    Cities[position] = newBest;
-                }
-            }
-            else
-            {
+                City curSelected = Cities[position];
+                Cities[Cities.IndexOf(newBest)] = curSelected;
                 Cities[position] = newBest;
             }
         }
+
         public override string ToString()
         {
             StringBuilder builder = new StringBuilder("Solution: ");
