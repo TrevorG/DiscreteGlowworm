@@ -10,26 +10,27 @@ namespace SRPP
     {
         public Solution Run(int populationSize, int iterations, State s)
         {
-            Solution best;
+            Solution best = null;
             Random random = new Random();
             IList<Solution> solutions;
-            IList<Difference> differences = new List<Difference>(populationSize);
+            //IList<Difference> differences = new List<Difference>(populationSize);
 
             solutions = Initialize(populationSize, s, random);
 
             for (int i = 0; i < iterations; ++i)
             {
                 Evaluate(solutions, s);
-                solutions.OrderBy(e => e.Evaluation);
+                solutions = solutions.OrderByDescending(e => e.Evaluation).ToList();
                 best = solutions.Last();
 
-                differences.Clear();
+                //differences.Clear();
                 for (int j = 0; j < populationSize - 1; ++j)
-                    differences.Add(new Difference(solutions[i], best));
+                    solutions[j].MergeWithBest(best);
+
 
             }
 
-            return null; //hush, compiler
+            return best;
 
         }
 
